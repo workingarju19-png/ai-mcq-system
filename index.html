@@ -3,12 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>AI MCQ Master</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .header {
+            background: #2563eb;
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .welcome {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .welcome h2 {
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        button {
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>AI MCQ Master</h1>
-    <p>Automatic MCQ Exam System</p>
+    <div class="header">
+        <h1>AI MCQ Master</h1>
+        <p>Automatic MCQ Exam System</p>
+    </div>
+
+    <div class="container">
+
+        <div class="welcome">
+            <h2>স্বাগতম 👋</h2>
+
+            <p>
+                বইয়ের ছবি বা প্রশ্ন থেকে স্বয়ংক্রিয়ভাবে MCQ তৈরি ও পরীক্ষা দিন।
+            </p>
+
+            <div class="buttons">
+                <button>📷 ছবি থেকে MCQ</button>
+                <button>📄 PDF থেকে MCQ</button>
+                <button>📝 প্রশ্ন ব্যাংক</button>
+                <button>🎯 পরীক্ষা শুরু</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            AI MCQ Master © 2026
+        </div>
+
+    </div>
 
 </body>
 </html>
