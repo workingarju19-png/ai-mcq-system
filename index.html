@@ -173,29 +173,30 @@
     </div>
 
 
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
-        function openImagePicker() {
-            document.getElementById("imageInput").click();
+<script>
+
+    function openImagePicker() {
+        document.getElementById("imageInput").click();
+    }
+
+    document.getElementById("imageInput").addEventListener("change", function(event) {
+
+        const file = event.target.files[0];
+
+        if (!file) {
+            return;
         }
 
-        document.getElementById("imageInput").addEventListener("change", function(event) {
+        const imageURL = URL.createObjectURL(file);
 
-            const file = event.target.files[0];
+        document.getElementById("previewImage").src = imageURL;
+        document.getElementById("previewBox").style.display = "block";
 
-            if (!file) {
-                return;
-            }
+    });
 
-            const imageURL = URL.createObjectURL(file);
-
-            document.getElementById("previewImage").src = imageURL;
-
-            document.getElementById("previewBox").style.display = "block";
-
-        });
-
-    </script>
+</script>
 
 </body>
 </html>
