@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AI MCQ Master</title>
 
+    <!-- Tesseract OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -95,21 +102,56 @@
             font-weight: bold;
         }
 
+        #ocrResult {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        #ocrText {
+            width: 100%;
+            min-height: 250px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+        }
+
         .footer {
             text-align: center;
             margin-top: 40px;
             color: #777;
             font-size: 14px;
         }
+
+        .status {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f0f4ff;
+            border-radius: 8px;
+            display: none;
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
+
+    <!-- HEADER -->
+
     <div class="header">
+
         <h1>AI MCQ Master</h1>
+
         <p>Automatic MCQ Exam System</p>
+
     </div>
+
+
+    <!-- MAIN -->
 
     <div class="container">
 
@@ -118,20 +160,20 @@
             <h2>স্বাগতম 👋</h2>
 
             <p>
-                বইয়ের ছবি বা প্রশ্ন থেকে স্বয়ংক্রিয়ভাবে MCQ তৈরি ও পরীক্ষা দিন।
+                বইয়ের ছবি থেকে লেখা পড়ুন এবং পরবর্তীতে AI দিয়ে MCQ তৈরি করুন।
             </p>
 
-            <!-- Hidden image input -->
-            <input
-    type="file"
-    id="imageInput"
-    accept="image/*"
-    style="display:none"
->
 
-<button onclick="document.getElementById('imageInput').click()">
-    🖼️ Gallery থেকে ছবি
-</button>
+            <!-- IMAGE INPUT -->
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+            >
+
+
+            <!-- BUTTONS -->
 
             <div class="buttons">
 
@@ -153,50 +195,256 @@
 
             </div>
 
-            <!-- Image Preview -->
+
+            <!-- STATUS -->
+
+            <div id="status" class="status">
+                প্রস্তুত
+            </div>
+
+
+            <!-- IMAGE PREVIEW -->
+
             <div id="previewBox">
 
                 <div class="selectedText">
-                    নির্বাচিত ছবি:
+                    📷 নির্বাচিত ছবি
                 </div>
 
-                <img id="previewImage" alt="Selected image">
+                <img
+                    id="previewImage"
+                    alt="Selected image"
+                >
+
+                <br><br>
+
+                <!-- OCR BUTTON -->
+
+                <button onclick="runOCR()">
+                    🔍 লেখা পড়ুন (OCR)
+                </button>
 
             </div>
 
+
+            <!-- OCR RESULT -->
+
+            <div id="ocrResult">
+
+                <h3>📄 পাওয়া লেখা</h3>
+
+                <textarea
+                    id="ocrText"
+                    placeholder="OCR করার পর এখানে লেখা দেখা যাবে..."
+                    readonly
+                ></textarea>
+
+            </div>
+
+
         </div>
 
+
         <div class="footer">
+
             AI MCQ Master © 2026
+
         </div>
 
     </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
-<script>
+    <!-- JAVASCRIPT -->
 
-    function openImagePicker() {
-        document.getElementById("imageInput").click();
-    }
+    <script>
 
-    document.getElementById("imageInput").addEventListener("change", function(event) {
 
-        const file = event.target.files[0];
+        // Gallery open
 
-        if (!file) {
-            return;
+        function openImagePicker() {
+
+            document
+                .getElementById("imageInput")
+                .click();
+
         }
 
-        const imageURL = URL.createObjectURL(file);
 
-        document.getElementById("previewImage").src = imageURL;
-        document.getElementById("previewBox").style.display = "block";
 
-    });
+        // Image selection
 
-</script>
+        document
+            .getElementById("imageInput")
+            .addEventListener("change", function(event) {
+
+                const file = event.target.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+
+                // Create image URL
+
+                const imageURL =
+                    URL.createObjectURL(file);
+
+
+                // Show image
+
+                document
+                    .getElementById("previewImage")
+                    .src = imageURL;
+
+
+                // Show preview box
+
+                document
+                    .getElementById("previewBox")
+                    .style.display = "block";
+
+
+                // Status
+
+                document
+                    .getElementById("status")
+                    .style.display = "block";
+
+                document
+                    .getElementById("status")
+                    .innerText =
+                    "✅ ছবি নির্বাচন করা হয়েছে। এখন OCR চালাতে পারেন।";
+
+            });
+
+
+
+        // OCR Function
+
+        async function runOCR() {
+
+
+            const file =
+                document
+                    .getElementById("imageInput")
+                    .files[0];
+
+
+            // Check image
+
+            if (!file) {
+
+                alert(
+                    "আগে একটি ছবি নির্বাচন করুন।"
+                );
+
+                return;
+
+            }
+
+
+            const ocrText =
+                document
+                    .getElementById("ocrText");
+
+
+            const status =
+                document
+                    .getElementById("status");
+
+
+            // Show status
+
+            status.style.display = "block";
+
+            status.innerText =
+                "⏳ OCR প্রস্তুত হচ্ছে...";
+
+
+            ocrText.value = "";
+
+
+
+            try {
+
+
+                // Run Tesseract
+
+                const result =
+                    await Tesseract.recognize(
+
+                        file,
+
+                        "eng",
+
+                        {
+
+                            logger: function(info) {
+
+
+                                if (
+                                    info.status ===
+                                    "recognizing text"
+                                ) {
+
+
+                                    const progress =
+                                        Math.round(
+                                            info.progress * 100
+                                        );
+
+
+                                    status.innerText =
+                                        "⏳ OCR চলছে: "
+                                        + progress
+                                        + "%";
+
+                                }
+
+                            }
+
+                        }
+
+                    );
+
+
+
+                // Show result
+
+                ocrText.value =
+                    result.data.text;
+
+
+                status.innerText =
+                    "✅ OCR সম্পন্ন হয়েছে।";
+
+
+            }
+
+
+            catch (error) {
+
+
+                console.error(error);
+
+
+                status.innerText =
+                    "❌ OCR করতে সমস্যা হয়েছে।";
+
+
+                ocrText.value =
+                    "OCR করা যায়নি। আবার চেষ্টা করুন।";
+
+            }
+
+
+        }
+
+
+    </script>
+
 
 </body>
+
 </html>
