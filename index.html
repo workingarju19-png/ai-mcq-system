@@ -4,7 +4,6 @@
 <head>
 
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AI MCQ Master</title>
@@ -109,19 +108,12 @@
 
         #ocrText {
             width: 100%;
-            min-height: 250px;
+            min-height: 300px;
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 10px;
             font-size: 16px;
             resize: vertical;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #777;
-            font-size: 14px;
         }
 
         .status {
@@ -132,6 +124,13 @@
             display: none;
         }
 
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+            font-size: 14px;
+        }
+
     </style>
 
 </head>
@@ -139,8 +138,6 @@
 
 <body>
 
-
-    <!-- HEADER -->
 
     <div class="header">
 
@@ -151,8 +148,6 @@
     </div>
 
 
-    <!-- MAIN -->
-
     <div class="container">
 
         <div class="welcome">
@@ -160,11 +155,11 @@
             <h2>স্বাগতম 👋</h2>
 
             <p>
-                বইয়ের ছবি থেকে লেখা পড়ুন এবং পরবর্তীতে AI দিয়ে MCQ তৈরি করুন।
+                বইয়ের ছবি থেকে বাংলা ও English লেখা পড়ুন।
             </p>
 
 
-            <!-- IMAGE INPUT -->
+            <!-- Image input -->
 
             <input
                 type="file"
@@ -173,7 +168,7 @@
             >
 
 
-            <!-- BUTTONS -->
+            <!-- Main buttons -->
 
             <div class="buttons">
 
@@ -196,14 +191,14 @@
             </div>
 
 
-            <!-- STATUS -->
+            <!-- Status -->
 
             <div id="status" class="status">
                 প্রস্তুত
             </div>
 
 
-            <!-- IMAGE PREVIEW -->
+            <!-- Preview -->
 
             <div id="previewBox">
 
@@ -218,24 +213,23 @@
 
                 <br><br>
 
-                <!-- OCR BUTTON -->
 
                 <button onclick="runOCR()">
-                    🔍 লেখা পড়ুন (OCR)
+                    🔍 বাংলা + English OCR
                 </button>
 
             </div>
 
 
-            <!-- OCR RESULT -->
+            <!-- OCR result -->
 
             <div id="ocrResult">
 
-                <h3>📄 পাওয়া লেখা</h3>
+                <h3>📄 OCR থেকে পাওয়া লেখা</h3>
 
                 <textarea
                     id="ocrText"
-                    placeholder="OCR করার পর এখানে লেখা দেখা যাবে..."
+                    placeholder="OCR করার পর এখানে বাংলা ও English লেখা দেখা যাবে..."
                     readonly
                 ></textarea>
 
@@ -255,12 +249,10 @@
 
 
 
-    <!-- JAVASCRIPT -->
-
     <script>
 
 
-        // Gallery open
+        // Open Gallery
 
         function openImagePicker() {
 
@@ -272,55 +264,52 @@
 
 
 
-        // Image selection
+        // When image is selected
 
         document
             .getElementById("imageInput")
             .addEventListener("change", function(event) {
 
-                const file = event.target.files[0];
+
+                const file =
+                    event.target.files[0];
+
 
                 if (!file) {
                     return;
                 }
 
 
-                // Create image URL
-
                 const imageURL =
                     URL.createObjectURL(file);
 
-
-                // Show image
 
                 document
                     .getElementById("previewImage")
                     .src = imageURL;
 
 
-                // Show preview box
-
                 document
                     .getElementById("previewBox")
                     .style.display = "block";
 
 
-                // Status
-
                 document
                     .getElementById("status")
                     .style.display = "block";
 
+
                 document
                     .getElementById("status")
                     .innerText =
-                    "✅ ছবি নির্বাচন করা হয়েছে। এখন OCR চালাতে পারেন।";
+                    "✅ ছবি নির্বাচন করা হয়েছে।";
+
 
             });
 
 
 
-        // OCR Function
+        // OCR
 
         async function runOCR() {
 
@@ -330,8 +319,6 @@
                     .getElementById("imageInput")
                     .files[0];
 
-
-            // Check image
 
             if (!file) {
 
@@ -344,22 +331,20 @@
             }
 
 
-            const ocrText =
-                document
-                    .getElementById("ocrText");
-
-
             const status =
                 document
                     .getElementById("status");
 
 
-            // Show status
+            const ocrText =
+                document
+                    .getElementById("ocrText");
+
 
             status.style.display = "block";
 
             status.innerText =
-                "⏳ OCR প্রস্তুত হচ্ছে...";
+                "⏳ বাংলা OCR-এর language data প্রস্তুত হচ্ছে...";
 
 
             ocrText.value = "";
@@ -369,14 +354,19 @@
             try {
 
 
-                // Run Tesseract
+                /*
+                 * বাংলা + English OCR
+                 *
+                 * ben = Bengali
+                 * eng = English
+                 */
 
                 const result =
                     await Tesseract.recognize(
 
                         file,
 
-                        "eng",
+                        "ben+eng",
 
                         {
 
@@ -410,14 +400,12 @@
 
 
 
-                // Show result
-
                 ocrText.value =
                     result.data.text;
 
 
                 status.innerText =
-                    "✅ OCR সম্পন্ন হয়েছে।";
+                    "✅ বাংলা + English OCR সম্পন্ন হয়েছে।";
 
 
             }
