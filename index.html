@@ -74,6 +74,27 @@
             background: #1d4ed8;
         }
 
+        #imageInput {
+            display: none;
+        }
+
+        #previewBox {
+            display: none;
+            margin-top: 25px;
+        }
+
+        #previewImage {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+
+        .selectedText {
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
         .footer {
             text-align: center;
             margin-top: 40px;
@@ -93,18 +114,52 @@
     <div class="container">
 
         <div class="welcome">
+
             <h2>স্বাগতম 👋</h2>
 
             <p>
                 বইয়ের ছবি বা প্রশ্ন থেকে স্বয়ংক্রিয়ভাবে MCQ তৈরি ও পরীক্ষা দিন।
             </p>
 
+            <!-- Hidden image input -->
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                capture="environment"
+            >
+
             <div class="buttons">
-                <button>📷 ছবি থেকে MCQ</button>
-                <button>📄 PDF থেকে MCQ</button>
-                <button>📝 প্রশ্ন ব্যাংক</button>
-                <button>🎯 পরীক্ষা শুরু</button>
+
+                <button onclick="openImagePicker()">
+                    📷 ছবি থেকে MCQ
+                </button>
+
+                <button>
+                    📄 PDF থেকে MCQ
+                </button>
+
+                <button>
+                    📝 প্রশ্ন ব্যাংক
+                </button>
+
+                <button>
+                    🎯 পরীক্ষা শুরু
+                </button>
+
             </div>
+
+            <!-- Image Preview -->
+            <div id="previewBox">
+
+                <div class="selectedText">
+                    নির্বাচিত ছবি:
+                </div>
+
+                <img id="previewImage" alt="Selected image">
+
+            </div>
+
         </div>
 
         <div class="footer">
@@ -112,6 +167,31 @@
         </div>
 
     </div>
+
+
+    <script>
+
+        function openImagePicker() {
+            document.getElementById("imageInput").click();
+        }
+
+        document.getElementById("imageInput").addEventListener("change", function(event) {
+
+            const file = event.target.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const imageURL = URL.createObjectURL(file);
+
+            document.getElementById("previewImage").src = imageURL;
+
+            document.getElementById("previewBox").style.display = "block";
+
+        });
+
+    </script>
 
 </body>
 </html>
